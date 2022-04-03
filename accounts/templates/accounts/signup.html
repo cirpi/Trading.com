@@ -1,0 +1,21 @@
+{% extends 'accounts/layout.html' %}
+{% block body %}
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                {{ form|crispy }}
+                <div class="mt-1 text-center">
+                    <button type="submit" class="btn btn-outline-secondary">Signup</button>
+                </div>
+            </form>
+            <div class="link text-center my-2">
+                <a href="{% url 'accounts:signin' %}">Already have an account?</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
