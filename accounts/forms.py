@@ -12,10 +12,10 @@ class SignupForm(UserCreationForm):
         self.fields['password2'].label = 'Confirm Password'
         self.fields['email'].widget.attrs = {'class':'validate my-1', 'required':'',}
         self.fields['email'].unique = True
-        self.fields['first_name'].widget.attrs = { 'required':'', 'autofocus':True}
-        self.fields['last_name'].widget.attrs = { 'required':''} 
-        self.fields['password1'].widget.attrs = { 'required':'',}
-        self.fields['password2'].widget.attrs = { 'required':'',}
+        self.fields['first_name'].widget.attrs = { 'required':'', 'class':'my-3', 'autofocus':True}
+        self.fields['last_name'].widget.attrs = { 'required':'', 'class':'my-3',} 
+        self.fields['password1'].widget.attrs = { 'required':'', 'class':'my-3',}
+        self.fields['password2'].widget.attrs = { 'required':'', 'class':'my-3',}
 
     class Meta:
         model = User
