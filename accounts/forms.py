@@ -12,10 +12,10 @@ class SignupForm(UserCreationForm):
         self.fields['password2'].label = 'Confirm Password'
         self.fields['email'].widget.attrs = {'class':'validate my-1', 'required':'',}
         self.fields['email'].unique = True
-        self.fields['first_name'].widget.attrs = {'class':'validate my-1', 'required':'', 'autofocus':True}
-        self.fields['last_name'].widget.attrs = {'class':'validate my-1', 'required':''}
-        self.fields['password1'].widget.attrs = {'class':'validate my-1', 'required':'',}
-        self.fields['password2'].widget.attrs = {'class':'validate my-1', 'required':'',}
+        self.fields['first_name'].widget.attrs = { 'required':'', 'autofocus':True}
+        self.fields['last_name'].widget.attrs = { 'required':''} 
+        self.fields['password1'].widget.attrs = { 'required':'',}
+        self.fields['password2'].widget.attrs = { 'required':'',}
 
     class Meta:
         model = User
@@ -26,7 +26,21 @@ class SignupForm(UserCreationForm):
         users = User.objects.filter(email=email)
         if len(users) > 0:
             raise forms.ValidationError('Email already exists.')
+        if not email:
+            raise forms.ValidationError('Email must not be empty.')
         return email
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if not first_name:
+            raise forms.ValidationError('Firstname must not be empty.')
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name')
+        if not last_name:
+            raise forms.ValidationError('Firstname must not be empty.')
+        return last_name
 
 
 

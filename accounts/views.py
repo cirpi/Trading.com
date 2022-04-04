@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group, User
 from django.urls import reverse
 from django.shortcuts import redirect, render
 from django.contrib import messages
+from transactions.models import Balance
 from .forms import SigninForm, SignupForm
 
 # Create your views here.
@@ -26,6 +27,7 @@ def signup(request):
             group = Group.objects.get(name='Users')
             print(group)
             user.groups.add(group,)
+            Balance.objects.create(user=user).save()
             return HttpResponseRedirect(reverse('accounts:signin'))
     else:
         form = SignupForm()
@@ -58,5 +60,6 @@ def signin(request):
 
 
 def signout(request):
-    logout(request)
+    if request.user.is_authenticated:
+        logout(request)
     return redirect('accounts:home')

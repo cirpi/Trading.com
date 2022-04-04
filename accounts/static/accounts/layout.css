@@ -11,4 +11,8 @@ body .link a {
 body .link a:hover {
   color: green;
 }
+
+body nav .navbar-nav li a:hover {
+  color: green !important;
+}
 /*# sourceMappingURL=layout.css.map */
