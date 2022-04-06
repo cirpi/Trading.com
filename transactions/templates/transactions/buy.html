@@ -1,22 +1,38 @@
 {% extends 'accounts/layout.html' %}
+{% block static %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'transactions/style.css' %}">
+{% endblock %}
 {% block body %}
-<div class="container h-100">
-    <div class="row h-100 justify-content-center align-items-center">
-        <div class="col">
-            {% for message in messages %}
-            <div class="text-center alert alert-{{ message.tags }} alert-dismissible fade show">{{ message|safe }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="col-12">
+    <form method="POST">
+        {% csrf_token %}
+        {% load crispy_forms_tags %}
+        {{ form|crispy }}
+        <div class="text-center my-2">
+            <button type="submit" class="btn btn-outline-success">Search</button>
+        </div>
+    </form>
+</div>
+<div class="alert alert-secondary text-center">
+    <p class="my-auto">Account Balance: <span style="color: green;">${{ request.user.balance.all.0.total }}</span></p>
+</div>
+<div class="row">
+    {% for stock in stocks %}
+    <div class="col-sm-4 my-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="card-title">{{ stock.ticker }}</div>
+                <div class="card-text">{{ stock.name }}</div>
+                <a href="{% url 'transactions:confirm' stock.ticker %}" class="btn btn-success my-2">Buy</a>
             </div>
-            {% endfor %}
-            <form method="POST">
-                {% csrf_token %}
-                {% load crispy_forms_tags %}
-                {{ form|crispy }}
-                <div class="my-2 text-center">
-                    <button type="submit" class="btn btn-outline-secondary">Get Info</button>
-                </div>
-            </form>
         </div>
     </div>
+    {% empty %}
+    <div class="text-center col">
+        <h4>No companies under your query.</h4>
+        <a href="{% url 'transactions:buy' %}">Show all</a>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

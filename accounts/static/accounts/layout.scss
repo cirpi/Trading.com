@@ -1,7 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Anybody&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fontdiner+Swanky&display=swap");
+// All other than brand
+@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&family=Ubuntu+Condensed&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bowlby+One&family=Bowlby+One+SC&family=Raleway&family=Sacramento&display=swap");
 
 body {
-    font-family: Anybody;
+    .navbar-brand {
+        font-family: Bowlby One;
+    }
+    font-family: Roboto;
     height: 100%;
     .link {
         a {
@@ -21,5 +27,8 @@ body {
                 }
             }
         }
+    }
+    .asteriskField {
+        display: none;
     }
 }

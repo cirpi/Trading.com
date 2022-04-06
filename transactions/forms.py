@@ -1,22 +1,29 @@
+from typing import Any, Mapping, Optional, Union
 from django import forms
-from .models import Stock
-
-
-class BuyForm(forms.Form):
-    ticker = forms.CharField(max_length=20, required=True, widget=forms.TextInput(
-        attrs={'style': 'text-transform:uppercase;'}))
-
-    def clean_ticker(self):
-        try:
-            ticker = self.cleaned_data.get('ticker')
-            if not ticker:
-                raise forms.ValidationError('Ticker must not be empty.')
-            ticker = ticker.upper()
-            stock = Stock.objects.get(ticker=ticker)
-        except Stock.DoesNotExist:
-            raise forms.ValidationError('Not available in NYSE.')
-        return ticker
+from .models import Balance, Stock
 
 
 class BuyConfirmForm(forms.Form):
-    pass
+    quantity = forms.FloatField(required=True)
+
+    def clean_quantity(self):
+        quantity = self.cleaned_data.get('qunatity')
+        if not quantity:
+            raise forms.ValidationError('Quantity must not be empty.')
+        return quantity
+
+
+class SearchForm(forms.Form):
+    ticker = forms.CharField(max_length=10, required=False, widget=forms.TextInput(attrs={'style':'text-transform: uppercase;', 'class':'my-1'}))
+    name = forms.CharField(max_length=100,required=False, widget=forms.TextInput(attrs={'class':'my-1'}))
+
+    def clean(self):
+        super().clean()
+        ticker = self.cleaned_data.get('ticker')
+        name = self.cleaned_data.get('name')
+        if not ticker and not name:
+            raise forms.ValidationError('Atleast one should not be empty.')
+
+
+class ConfirmForm(forms.Form):
+    quantity = forms.IntegerField(required=True, error_messages={'required':'Quantity must not be empty.'}, widget=forms.NumberInput())

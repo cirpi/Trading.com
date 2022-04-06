@@ -1,26 +1,33 @@
-from platform import mac_ver
+from tkinter import Widget
+from turtle import width
 from django.contrib.auth.models import User
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 
-
 class SignupForm(UserCreationForm):
     def __init__(self, *args,  **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs = {'autofocus':False, 'class':'my-1',}
+        self.fields['username'].widget.attrs = {
+            'autofocus': False, 'class': 'my-1', }
         self.fields['password2'].label = 'Confirm Password'
-        self.fields['email'].widget.attrs = {'class':'validate my-1', 'required':'',}
+        self.fields['email'].widget.attrs = {
+            'class': 'validate my-1', 'required': '', }
         self.fields['email'].unique = True
-        self.fields['first_name'].widget.attrs = { 'required':'', 'class':'my-3', 'autofocus':True}
-        self.fields['last_name'].widget.attrs = { 'required':'', 'class':'my-3',} 
-        self.fields['password1'].widget.attrs = { 'required':'', 'class':'my-3',}
-        self.fields['password2'].widget.attrs = { 'required':'', 'class':'my-3',}
+        self.fields['first_name'].widget.attrs = {
+            'required': '', 'class': 'my-3', 'autofocus': True}
+        self.fields['last_name'].widget.attrs = {
+            'required': '', 'class': 'my-3', }
+        self.fields['password1'].widget.attrs = {
+            'required': '', 'class': 'my-3', }
+        self.fields['password2'].widget.attrs = {
+            'required': '', 'class': 'my-3', }
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
-    
+        fields = ['first_name', 'last_name', 'username',
+                  'email', 'password1', 'password2']
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         users = User.objects.filter(email=email)
@@ -43,7 +50,8 @@ class SignupForm(UserCreationForm):
         return last_name
 
 
-
 class SigninForm(forms.Form):
-    username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'class':'my-3', 'required':''}))
-    password = forms.CharField(max_length=255, widget=forms.PasswordInput(attrs={'class':'my-3', 'required':''}))
+    username = forms.CharField(required=True, max_length=150, widget=forms.TextInput(
+        attrs={'class': 'my-3', 'autocomplete':'off'}), error_messages={'required': 'Username must not be empty.'},)
+    password = forms.CharField(max_length=255, widget=forms.PasswordInput(
+        attrs={'class': 'my-3', 'autocomplete':'off'}), error_messages={'required': 'Password must not be empty.'})

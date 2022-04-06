@@ -23,9 +23,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             user = User.objects.get(username=form.cleaned_data.get('username'))
-            print(User)
             group = Group.objects.get(name='Users')
-            print(group)
             user.groups.add(group,)
             Balance.objects.create(user=user).save()
             return HttpResponseRedirect(reverse('accounts:signin'))
@@ -42,7 +40,6 @@ def signin(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             try:
-                check = User.objects.get(username=username)
                 user = authenticate(username=username, password=password)
                 if user:
                     login(request, user)
@@ -52,8 +49,6 @@ def signin(request):
             except User.DoesNotExist:
                 messages.error(request, 'No such user', 'danger')
     else:
-        if request.user.is_authenticated:
-            return redirect('accounts:home')
         messages.warning(request, 'You must sign in to continue!', 'warning')
         form = SigninForm()
     return render(request, 'accounts/signin.html', {'form': form})

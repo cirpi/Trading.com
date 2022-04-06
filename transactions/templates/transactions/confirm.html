@@ -1,0 +1,25 @@
+{% extends 'accounts/layout.html' %}
+{% block body %}
+<div class="col">
+    <div class="card text-center">
+        <div class="card-body">
+            {% if data.status != "NOT_FOUND" %}
+            <p class="card-title">{{ stock.name }}</p>
+            <p class="card-text">Price: <span style="color: green;">${{ data.high }}</span></p>
+            <p class="card-text" style="color: green;">Quantity should be less than or equal to {{ max }}.</p>
+            <form class="container" action="{% url 'transactions:confirm' data.symbol %}" method="POST">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                {{ form|crispy }}
+                <div class="my-2 text-center">
+                    <button type="submit" class="btn btn-outline-success">Buy</button>
+                </div>
+            </form>
+            {% else %}
+            <h3 class="text-center alert alert-danger">Not found in polygon.io</h3>
+            <a href="{% url 'transactions:buy' %}" class="btn btn-success">All stocks.</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
